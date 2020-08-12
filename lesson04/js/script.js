@@ -11,11 +11,11 @@ const money = +prompt('Ваш месячный доход?', 50000),
   expenses2 = prompt('Введите обязательную статью расходов?'),
   amount2 = +prompt('Во сколько это обойдется?');
   
-let showTypeOf = data => console.log(data, typeof(data));
-let getExpensesMonth = () => amount1 + amount2;
-let getAccumulatedMonth = () => money - getExpensesMonth();
-let getTargetMonth = () =>  Math.ceil(mission / accumulatedMonth)
-let getStatusIncome = () => {
+const showTypeOf = data => console.log(data, typeof(data));
+const getExpensesMonth = () => amount1 + amount2;
+const getAccumulatedMonth = () => money - getExpensesMonth();
+const getTargetMonth = () =>  Math.ceil(mission / accumulatedMonth);
+const getStatusIncome = () => {
   if (budgetDay >= 1200) {
     return 'У вас высокий уровень дохода';  
   } else if (budgetDay < 1200 && budgetDay >= 600) {
