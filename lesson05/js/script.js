@@ -1,16 +1,16 @@
-'use strict'
+'use strict';
 
 const income = 'Freelance',
   addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую'),
   period = 12,
   deposit = confirm('Есть ли у Вас депозит в банке?'),
-  mission = 100_000;
+  mission = 100000;
 
 let money, expenses1, expenses2, amount;
 
-let isNumber = (n) => {return !isNaN(parseFloat(n)) && isFinite(n)}; 
+const isNumber = (n) => {return !isNaN(parseFloat(n)) && isFinite(n);}; 
 
-let start = () => {
+const start = () => {
   do {
     money = prompt('Ваш месячный доход?');
   } while (!isNumber(money));
@@ -32,13 +32,16 @@ const getExpensesMonth = () => {
     
     do {
       amount = prompt('Во сколько это обойдется?');
-    } while (!isNumber(amount)) 
+    } while (!isNumber(amount)); 
 
     sum += +amount;
   }
   
   return sum;
 };
+
+const accumulatedMonth = getAccumulatedMonth();  
+const budgetDay = accumulatedMonth / 30;  
 
 const expensesAmount = getExpensesMonth();
 const getAccumulatedMonth = () => money - expensesAmount;
@@ -55,15 +58,12 @@ const getStatusIncome = () => {
   }  
 };
 
-const accumulatedMonth = getAccumulatedMonth();  
-const budgetDay = accumulatedMonth / 30;  
-
 showTypeOf(money);
 showTypeOf(income);
 showTypeOf(deposit);
 console.log('Расходы за месяц: ', expensesAmount);
 console.log(addExpenses.toLowerCase().split(', '));
-(getTargetMonth() >= 0) ? console.log(`Срок достижения цели: ${getTargetMonth()} мес.`) :
-                          console.log('Цель не будет достигнута!');
+(getTargetMonth() >= 0) ? console.log(`Срок достижения цели: ${getTargetMonth()} мес.`) : 
+  console.log('Цель не будет достигнута!');
 console.log('Бюджет на день: ', budgetDay);
 console.log(getStatusIncome());
