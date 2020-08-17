@@ -2,6 +2,12 @@
 
 const isNumber = (n) => {return !isNaN(parseFloat(n)) && isFinite(n);}; 
 
+const isNull = function(s) {
+  if (!Boolean(s)) {
+    alert(Boolean(s) + 'Вы не ввели значение!')
+  }; 
+};
+
 let money,
     start = () => {
       do {
@@ -24,18 +30,18 @@ let appData = {
   budgetMonth: 0, 
   expensesMonth: 0,
   asking: function() {
-    let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
-        appData.addExpenses = addExpenses.toLowerCase().split(', ');
-        appData.deposit = confirm('Есть ли у Вас депозит в банке?');
-        for (let i = 0; i < 2; i++) {
-          function amount() {
-            do {
-              amount = prompt('Во сколько это обойдется?');
-            } while (!isNumber(amount)); 
-          return +amount;
-          };
-          appData.expenses[prompt('Введите обязательную статью расходов?')] = amount();  
-        };
+    const addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
+    appData.addExpenses = addExpenses.toLowerCase().split(', ');
+    appData.deposit = confirm('Есть ли у Вас депозит в банке?');
+    for (let i = 0; i < 2; i++) {
+      function amount() {
+        do {
+          amount = prompt('Во сколько это обойдется?');
+        } while (!isNumber(amount)); 
+        return +amount;
+      };
+    appData.expenses[prompt('Введите обязательную статью расходов?')] = amount();  
+    };
   },
   getExpensesMonth: function() {
     let sum = 0;
@@ -44,12 +50,14 @@ let appData = {
       };
     appData.expensesMonth = sum;       
   },
-  getBudget: () => { 
+  getBudget: function() { 
     appData.budgetMonth = appData.budget - appData.expensesMonth;
     appData.budgetDay = appData.budgetMonth / 30;
   },
-  getTargetMonth: () =>  Math.ceil(appData.mission / appData.budgetMonth),
-  getStatusIncome: () => {
+  getTargetMonth: function() {
+    return Math.ceil(appData.mission / appData.budgetMonth);
+  },
+  getStatusIncome: function() {
     if (appData.budgetDay >= 1200) {
       return 'У вас высокий уровень дохода';  
     } else if (appData.budgetDay < 1200 && appData.budgetDay >= 600) {
