@@ -1,19 +1,13 @@
 'use strict';
 
-const isNumber = (n) => {return !isNaN(parseFloat(n)) && isFinite(n);}; 
+const isNumber = n => !isNaN(parseFloat(n)) && isFinite(n); 
 
-const isNull = function(s) {
-  if (!Boolean(s)) {
-    alert('Вы не ввели значение!')
-  }; 
+let money;
+const start = function() {
+  do {
+    money = prompt('Ваш месячный доход?');
+  } while (!isNumber(money));
 };
-
-let money,
-    start = () => {
-      do {
-        money = prompt('Ваш месячный доход?');
-    } while (!isNumber(money));
-  };
 
 start();
 
@@ -30,22 +24,11 @@ let appData = {
   budgetMonth: 0, 
   expensesMonth: 0,
   asking: function() {
-    //Вариант
-    // const addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');      
-    //   do {
-    //     addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');      
-    //   } while (!isNull(addExpenses));
-
-    // Вариант 2
-      // const addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');      
-        // if (!isNull(addExpenses)) {
-        //   do {
-        //     addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');      
-        //     } while (!isNull(addExpenses));                    
-        // };
-
-    const addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
-    appData.addExpenses = addExpenses.toLowerCase().split(', ');
+    let addExp;
+    do {
+      addExp = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');      
+    } while (!Boolean(addExp.trim()));
+    appData.addExpenses = addExp.toLowerCase().split(', ');
     appData.deposit = confirm('Есть ли у Вас депозит в банке?');
     for (let i = 0; i < 2; i++) {
       function amount() {
@@ -54,7 +37,10 @@ let appData = {
         } while (!isNumber(amount)); 
         return +amount;
       };
-    appData.expenses[prompt('Введите обязательную статью расходов?')] = amount();  
+      do {
+        addExp = prompt('Введите обязательную статью расходов?');      
+      } while (!Boolean(addExp.trim()));
+      appData.expenses[addExp] = amount();  
     };
   },
   getExpensesMonth: function() {
