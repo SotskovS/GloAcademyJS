@@ -4,14 +4,14 @@ const isNumber = (n) => {return !isNaN(parseFloat(n)) && isFinite(n);};
 
 const isNull = function(s) {
   if (!Boolean(s)) {
-    alert(Boolean(s) + 'Вы не ввели значение!')
+    alert('Вы не ввели значение!')
   }; 
 };
 
 let money,
     start = () => {
       do {
-        money = +prompt('Ваш месячный доход?');
+        money = prompt('Ваш месячный доход?');
     } while (!isNumber(money));
   };
 
@@ -30,6 +30,20 @@ let appData = {
   budgetMonth: 0, 
   expensesMonth: 0,
   asking: function() {
+    //Вариант
+    // const addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');      
+    //   do {
+    //     addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');      
+    //   } while (!isNull(addExpenses));
+
+    // Вариант 2
+      // const addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');      
+        // if (!isNull(addExpenses)) {
+        //   do {
+        //     addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');      
+        //     } while (!isNull(addExpenses));                    
+        // };
+
     const addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
     appData.addExpenses = addExpenses.toLowerCase().split(', ');
     appData.deposit = confirm('Есть ли у Вас депозит в банке?');
