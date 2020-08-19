@@ -26,6 +26,7 @@ let appData = {
   budgetMonth: 0, 
   expensesMonth: 0,
   asking: function() {
+
     if(confirm('Есть ли у вас дополнительный источник заработка?')) {
       let itemIncome, cashIncome;
       do {
@@ -45,24 +46,29 @@ let appData = {
     } while (!Boolean(addExp.trim()) || isNumber(addExp));
     appData.addExpenses = addExp.toLowerCase().split(', ');
     appData.deposit = confirm('Есть ли у Вас депозит в банке?');
+
+    const expenditure = function() {
+      let amount;
+      do {
+        amount = prompt('Во сколько это обойдется?');
+      } while (!isNumber(amount)); 
+      return +amount;
+    };
+
     for (let i = 0; i < 2; i++) {
-      function amount() {
-        do {
-          amount = prompt('Во сколько это обойдется?');
-        } while (!isNumber(amount)); 
-        return +amount;
-      };
       do {
         addExp = prompt('Введите обязательную статью расходов?');      
       } while(!Boolean(addExp.trim()) || isNumber(addExp));
-      appData.expenses[addExp] = amount();  
-    };
+      appData.expenses[addExp] = expenditure() ;  
+    }
   },
   getExpensesMonth: function() {
     let sum = 0;
+
       for (let key in appData.expenses) {
         sum += appData.expenses[key];
-      };
+      }
+      
     appData.expensesMonth = sum;       
   },
   getBudget: function() { 
@@ -84,6 +90,7 @@ let appData = {
     }  
   },
   getInfoDeposit: function() {
+
     if (appData.deposit) {
       do {
         appData.percentDeposit = prompt('Какой годовой процент?');
@@ -92,6 +99,7 @@ let appData = {
         appData.moneyDeposit = prompt('Какая сумма заложена?');
       } while (!isNumber(appData.moneyDeposit));
     }
+    
   },
   calcSavedMoney: function() {
     return appData.budgetMonth * appData.period;
@@ -109,9 +117,8 @@ console.log('Расходы за месяц: ', appData.expensesMonth);
 console.log('Срок достижения цели: ', appData.getTargetMonth());
 console.log('Уровень дохода: ', appData.getStatusIncome());
 
-console.log(appData.percentDeposit, appData.moneyDeposit, appData.calcSavedMoney());
+const upperCase = appData.addExpenses.map(function(item) {
+  return item[0].toUpperCase() + item.slice(1);
+});
 
-console.log('Наша программа включает в себя данные: ');
-for (let key in appData) {
-  console.log(key, appData[key]);
-}
+console.log(upperCase.join(', '));
