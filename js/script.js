@@ -1,6 +1,8 @@
 'use strict';
 
-const isNumber = n => !isNaN(parseFloat(n)) && isFinite(n); 
+const isNumber = function(n) {
+  return (!isNaN(parseFloat(n)) && isFinite(n)); 
+};
 
 let money;
 const start = function() {
@@ -27,11 +29,11 @@ let appData = {
   expensesMonth: 0,
   asking: function() {
 
-    if(confirm('Есть ли у вас дополнительный источник заработка?')) {
+    if (confirm('Есть ли у вас дополнительный источник заработка?')) {
       let itemIncome, cashIncome;
       do {
         itemIncome = prompt('Какой у вас дополнительный заработок?');
-      } while(!Boolean(itemIncome.trim()) || isNumber(itemIncome));
+      } while(!(itemIncome.trim()) || isNumber(itemIncome));
 
       do {
         cashIncome = prompt('Сколько в месяц на этом зарабатываете?');
@@ -43,7 +45,7 @@ let appData = {
     let addExp;
     do {
       addExp = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');      
-    } while (!Boolean(addExp.trim()) || isNumber(addExp));
+    } while (!(addExp.trim()) || isNumber(addExp));
     appData.addExpenses = addExp.toLowerCase().split(', ');
     appData.deposit = confirm('Есть ли у Вас депозит в банке?');
 
@@ -58,7 +60,7 @@ let appData = {
     for (let i = 0; i < 2; i++) {
       do {
         addExp = prompt('Введите обязательную статью расходов?');      
-      } while(!Boolean(addExp.trim()) || isNumber(addExp));
+      } while(!(addExp.trim()) || isNumber(addExp));
       appData.expenses[addExp] = expenditure() ;  
     }
   },
@@ -114,11 +116,12 @@ appData.getStatusIncome();
 appData.getInfoDeposit();
 
 console.log('Расходы за месяц: ', appData.expensesMonth);
-console.log('Срок достижения цели: ', appData.getTargetMonth());
+console.log('Срок достижения цели: ', appData.getTargetMonth() + ' мес.');
 console.log('Уровень дохода: ', appData.getStatusIncome());
 
 const upperCase = appData.addExpenses.map(function(item) {
-  return item[0].toUpperCase() + item.slice(1);
+  item = item.trim();
+  return item[0].toUpperCase() + item.slice(1);  
 });
 
-console.log(upperCase.join(', '));
+console.log(upperCase.join(', '));  
