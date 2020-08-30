@@ -16,7 +16,7 @@ let start = document.querySelector('#start'),
   additionalExpensesValue = document.querySelector('.additional_expenses-value'),
   incomePeriodValue = document.querySelector('.income_period-value'),
   targetMonthValue = document.querySelector('.target_month-value'),
-
+  
   incomeItems = document.querySelectorAll('.income-items'),
   expensesItems = document.querySelectorAll('.expenses-items'),
   additionalExpensesItem = document.querySelector('.additional_expenses-item'),
@@ -47,18 +47,36 @@ let appData = {
   expensesMonth: 0,
   start: function() {
 
-    appData.budget = +salaryAmount.value;    
+    appData.budget = +salaryAmount.value;   
+    
+    this.getExpenses();
+    this.getIncome();
+    this.getExpensesMonth();
+    this.getIncomeMonth();
+    this.getAddExpenses();
+    this.getAddIncome();
+    this.getBudget();
+    this.getPeriod();
+    this.showResult();
+    
+    start.style.display = "none";
+    cancel.style.display = "block";
+    
+    inputs.forEach(function(item) {
+      item.setAttribute('disabled', true);
 
-    appData.getExpenses();
-    appData.getIncome();
-    appData.getExpensesMonth();
-    appData.getIncomeMonth();
-    appData.getAddExpenses();
-    appData.getAddIncome();
-    appData.getBudget();
-    appData.getPeriod();
-    appData.showResult();
-    appData.reset();
+    });        
+
+    incomeItems.forEach(function(item) {      
+      item.querySelector('input').setAttribute('disabled', true);
+    });
+
+    expensesItems.forEach(function(item) {      
+      item.querySelector('input').setAttribute('disabled', true);
+    });
+
+    btnPlusIncome.setAttribute('disabled', true);
+    btnPlusExpences.setAttribute('disabled', true);    
   },
   getBtnStartDisable: function() {
 
@@ -69,15 +87,60 @@ let appData = {
     }
   },
   reset: function() {
-
-    start.style.display = "none";
-    cancel.style.display = "block";
     
-    inputs.forEach(function(item) {
-      item.setAttribute('disabled', true);
-    });    
-  }, 
+    start.style.display = "block";
+    cancel.style.display = "none";
+
+    inputs.forEach(function(item) {      
+      item.removeAttribute('disabled');
+      item.value = '';
+    });
+
+    incomeItems.forEach(function(item, i) {
+      console.log();
+      switch (i) {
+        case 1:
+          incomeItems[1].remove();
+          break;
+        case 2:
+          incomeItems[1].remove();
+          incomeItems[2].remove();
+          break;
+        default:
+          break;
+      }      
+    });
+
+    expensesItems.forEach(function(item, i) {
+      console.log();
+      switch (i) {
+        case 1:
+          expensesItems[1].remove();
+          break;
+        case 2:
+          expensesItems[1].remove();
+          expensesItems[2].remove();
+          break;
+        default:
+          break;
+      }      
+    });
+
+    btnPlusIncome.style.display = 'block';
+    btnPlusExpences.style.display = 'block';
+    
+    expensesItems.forEach(function(item) {
+      item.querySelector('input').removeAttribute('disabled', true);
+      item.querySelector('input').value = '';
+    });
+
+    btnPlusIncome.removeAttribute('disabled');
+    btnPlusExpences.removeAttribute('disabled');
+    periodSelect.value = 1;
+    periodAmount.textContent = "1";
+  },
   showResult: function(){
+
     budgetMonthValue.value = appData.budgetMonth;
     budgetDayValue.value = appData.budgetDay;
     expensesMonthValue.value = appData.expensesMonth;
@@ -107,7 +170,6 @@ let appData = {
     incomeItems[0].parentNode.insertBefore(cloneIncomeItem, btnPlusIncome);
     incomeItems = document.querySelectorAll('.income-items');
     
-
     if (incomeItems.length === 3) {
       btnPlusIncome.style.display = 'none';
     }
@@ -227,8 +289,8 @@ let appData = {
 
 document.addEventListener('change', appData.getBtnStartDisable());
 
-start.addEventListener('click', appData.start);
-// start.addEventListener('click', start.style.display = "none");
+start.addEventListener('click', appData.start.bind(appData));
+cancel.addEventListener('click', appData.reset.bind(appData));
 
 periodSelect.addEventListener('change', appData.getPeriod);
 btnPlusExpences.addEventListener('click', appData.addExpensesBlock);
