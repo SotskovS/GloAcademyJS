@@ -29,7 +29,9 @@ let incomeItems = document.querySelectorAll('.income-items'),
 start.disabled = true;
 
 salaryAmount.oninput = function() { 
-  start.disabled = false;
+  if (salaryAmount.value.trim() !== '') {
+    start.disabled = false;  
+  }
 };
 
 const appData = {
@@ -46,7 +48,7 @@ const appData = {
   budgetMonth: 0, 
   expensesMonth: 0,
   start: function() {
-
+        
     this.budget = +salaryAmount.value;   
     
     this.getExpenses();
@@ -64,9 +66,8 @@ const appData = {
     
     inputs.forEach(function(item) {
       item.setAttribute('disabled', true);
-
     });        
-
+    
     incomeItems.forEach(function(item) {      
       item.querySelector('input').setAttribute('disabled', true);
     });
@@ -134,6 +135,11 @@ const appData = {
       item.querySelector('input').value = '';
     });
 
+    incomeItems.forEach(function(item) {
+      item.querySelector('input').removeAttribute('disabled', true);
+      item.querySelector('input').value = '';
+    });
+
     btnPlusIncome.removeAttribute('disabled');
     btnPlusExpences.removeAttribute('disabled');
     periodSelect.value = 1;
@@ -151,6 +157,7 @@ const appData = {
     this.budgetDay = 0;
     this.budgetMonth = 0; 
     this.expensesMonth = 0;
+    this.budgetMonth = 0;
     this.budgetDayValue = 0;
     this.budgetMonthValue = 0;
     this.incomePeriodValue = 0;
@@ -316,7 +323,7 @@ const appData = {
   },
   calcPeriod: function() {    
     return this.budgetMonth * periodSelect.value;
-  }
+  }  
 };
 
 document.addEventListener('change', appData.getBtnStartDisable());
