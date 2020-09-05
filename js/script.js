@@ -29,7 +29,9 @@ let incomeItems = document.querySelectorAll('.income-items'),
 start.disabled = true;
 
 salaryAmount.oninput = function() { 
-  start.disabled = false;
+  if (salaryAmount.value.trm() !== '') {
+    start.disabled = false;
+  }
 };
 
 const appData = {
