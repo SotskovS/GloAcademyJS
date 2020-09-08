@@ -152,6 +152,7 @@ class AppData {
     this.depositHandler();
   
     start.disabled = true;
+    depositPercent.style.display = 'none';
   }
 
   showResult(){
@@ -239,19 +240,6 @@ class AppData {
     });
   }
 
-  // asking() {
-  
-  //   this.deposit = confirm('Есть ли у Вас депозит в банке?');
-  
-  //   const expenditure = function() {
-  //     let amount;
-  //     do {
-  //       amount = prompt('Во сколько это обойдется?');
-  //     } while (!isNumber(amount)); 
-  //     return +amount;
-  //   };
-  // }
-
   getExpensesMonth() {
     
     let sum = 0;
@@ -336,6 +324,27 @@ class AppData {
       depositAmount.style.display = 'inline-block';
       this.deposit = true;
       depositBank.addEventListener('change', this.changePercent);
+
+      start.disabled = true;
+          
+        depositAmount.oninput = function() { 
+
+        let salaryMoney = salaryAmount.value.trim(),
+          depositMoney = depositAmount.value.trim();
+         
+        if (isNumber(salaryMoney) && isNumber(depositMoney)) {
+
+          depositPercent.oninput = function() {
+            let percentMoney = depositPercent.value.trim();
+
+            if (isNumber(percentMoney) && (percentMoney > 0 || percentMoney < 100)) {
+              start.disabled = false;
+            } else {
+              alert ("Введите корректное значение в поле проценты");
+            }
+          };          
+        }
+      };
     } else {
       depositBank.style.display = 'none';
       depositAmount.style.display = 'none';
@@ -348,40 +357,28 @@ class AppData {
   eventListener() {
   
     start.disabled = true;
-  
-    salaryAmount.oninput = function() { 
-          
-      let money = salaryAmount.value.trim();
+
+    if (!depositeCheck.checked) {
         
+      salaryAmount.oninput = function() { 
+      let salaryMoney = salaryAmount.value.trim();
+
+      if (isNumber(salaryMoney)) {
+        start.disabled = false;
+      }
+    };
+  } 
+  
+  
+    depositAmount.oninput = function() { 
+          
+      let money = depositAmount.value.trim();
+      
+        console.log(Boolean(money));
       if (isNumber(money)) {
         start.disabled = false;
       }
     };
-
-
-
-  //   depositAmount.oninput = function() {
-
-  //     let money2 = depositAmount.value.trim();
-  // console.log(Boolean(+depositAmount.value.trim()));
-
-
-  //     if (isNumber(money)) {
-  //       start.disabled = false;
-  //     } else {
-  //       alert('В поле "Сумма депозита" введено не число!');
-  //       start.disabled = true;
-  //     }
-      
-  //     // if (!isNumber(money)) {
-  //     //   start.disabled = true;
-  //     //   alert('В поле "Сумма депозита" введено не число!');
-  //     // } else {
-  //     //   start.disabled = false;
-  //     // }
-  //   };
-
-
   
     start.addEventListener('click', this.start.bind(this));
     cancel.addEventListener('click', appData.reset.bind(appData));
