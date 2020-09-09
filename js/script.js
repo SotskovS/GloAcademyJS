@@ -219,7 +219,7 @@ class AppData {
 
   getAddExpenses() {
     
-    let addExpenses = additionalExpensesItem.value.split(',');    
+    const addExpenses = additionalExpensesItem.value.split(',');    
     addExpenses.forEach((item) => {
       item = item.trim();
       
@@ -232,7 +232,7 @@ class AppData {
   getAddIncome() {
   
     additionalIncomeItem.forEach((item) => {
-      let itemValue = item.value.trim();
+      const itemValue = item.value.trim();
       
       if (itemValue !== '') {
         this.addIncome.push(itemValue);
@@ -309,6 +309,7 @@ class AppData {
     
     if (valueSelect === 'other') {
       depositPercent.style.display = 'inline-block';
+      depositPercent.value = '';
 
     } else {
       depositPercent.style.display = 'none';
@@ -322,29 +323,32 @@ class AppData {
     if (depositeCheck.checked) {
       depositBank.style.display = 'inline-block';
       depositAmount.style.display = 'inline-block';
-      this.deposit = true;
       depositBank.addEventListener('change', this.changePercent);
-
-      start.disabled = true;
-          
-        depositAmount.oninput = function() { 
-
-        let salaryMoney = salaryAmount.value.trim(),
+      
+      depositAmount.addEventListener('input', function() {
+        
+        start.disabled = true;
+        
+        const salaryMoney = salaryAmount.value.trim(),
           depositMoney = depositAmount.value.trim();
-         
-        if (isNumber(salaryMoney) && isNumber(depositMoney)) {
-
-          depositPercent.oninput = function() {
-            let percentMoney = depositPercent.value.trim();
-
-            if (isNumber(percentMoney) && (percentMoney > 0 || percentMoney < 100)) {
-              start.disabled = false;
-            } else {
-              alert ("Введите корректное значение в поле проценты");
-            }
-          };          
-        }
-      };
+        
+        if (isNumber(salaryMoney) && isNumber(depositMoney)) {            
+          start.disabled = false;
+        }                
+      });
+      
+      depositPercent.addEventListener('input', function() {
+        
+        start.disabled = true;
+        
+        const percentMoney = depositPercent.value.trim();
+        
+        if (isNumber(percentMoney) && (percentMoney > 0 && percentMoney < 100)) {
+          start.disabled = false;
+        } else {
+          alert ("Введите корректное значение в поле проценты");
+        }        
+      });   
     } else {
       depositBank.style.display = 'none';
       depositAmount.style.display = 'none';
@@ -360,32 +364,21 @@ class AppData {
 
     if (!depositeCheck.checked) {
         
-      salaryAmount.oninput = function() { 
-      let salaryMoney = salaryAmount.value.trim();
-
-      if (isNumber(salaryMoney)) {
-        start.disabled = false;
-      }
-    };
-  } 
-  
-  
-    depositAmount.oninput = function() { 
-          
-      let money = depositAmount.value.trim();
-      
-        console.log(Boolean(money));
-      if (isNumber(money)) {
-        start.disabled = false;
-      }
-    };
+      salaryAmount.addEventListener('input', function() {
+        const salaryMoney = salaryAmount.value.trim();
+        
+        if (isNumber(salaryMoney)) {
+          start.disabled = false;
+        }       
+      });
+    }
   
     start.addEventListener('click', this.start.bind(this));
-    cancel.addEventListener('click', appData.reset.bind(appData));
+    cancel.addEventListener('click', this.reset.bind(appData));
       
-    periodSelect.addEventListener('input', appData.getPeriod);
-    btnPlusExpences.addEventListener('click', appData.addExpensesBlock);
-    btnPlusIncome.addEventListener('click', appData.addIncomeBlock);
+    periodSelect.addEventListener('input', this.getPeriod);
+    btnPlusExpences.addEventListener('click', this.addExpensesBlock);
+    btnPlusIncome.addEventListener('click', this.addIncomeBlock);
     
     depositeCheck.addEventListener('change', this.depositHandler.bind(this));
   }
